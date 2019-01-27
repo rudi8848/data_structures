@@ -65,7 +65,6 @@ struct MaxQueue
 			{
 				int tmp = _left.top();
 				_left.pop();
-				//std::cout << "push right " << tmp << std::endl;
 				_right.push(tmp);
 			}
 		}
