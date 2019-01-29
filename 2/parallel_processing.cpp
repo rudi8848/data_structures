@@ -15,7 +15,6 @@ public:
 			++i;
 		}
 		_size = processors;
-		_maxSize = _heap.capacity();
 		BuildHeap();
 
 		i = 0;
@@ -23,7 +22,7 @@ public:
 		{
 			int task;
 			std::cin >> task;
-			ChangePriority(0, task);
+			ChangePriority(task);
 			++i;
 		}
 	}
@@ -42,7 +41,6 @@ public:
 	int		LeftChild(int i) { return 2 * i + 1; }
 	int		RightChild(int i) { return 2 * i + 2; }
 	int		size() { return _size; }
-	int 	maxSize() { return _maxSize; }
 
 	void	SiftDown(int i) {
 		int minIndex = i;
@@ -62,19 +60,18 @@ public:
 		}
 	}
 
-	void	ChangePriority(int i, unsigned long time) {
-		_log.push_back(std::make_pair(_heap[i].second, _heap[i].first));
-		_heap[i].first += time;
-		SiftDown(i);
+	void	ChangePriority(unsigned long time) {
+		_log.push_back(std::make_pair(_heap[0].second, _heap[0].first));
+		_heap[0].first += time;
+		SiftDown(0);
 	}
-	std::vector<std::pair<long, int>> const & heap() { return _heap; }
+	std::vector<T> const & heap() { return _heap; }
 	std::vector<std::pair<int, unsigned long>> const & log() { return _log;}
 	
 private:
-	std::vector<T>	_heap;
-	std::vector<std::pair<int, unsigned long>> _log;
-	int 				_size;
-	int 				_maxSize;
+	std::vector<T>								_heap;
+	std::vector<std::pair<int, unsigned long>> 	_log;
+	int 										_size;
 };
 
 int main(void)

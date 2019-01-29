@@ -103,11 +103,11 @@ int	main(void)
 		std::cin >> v[i];
 
 	MinHeap heap(v);
-	
+	/*
 	for (int i = 0; i < n; ++i)
 		std::cout << heap.heap()[i] << " ";
 	std::cout << std::endl;
-	
+	*/
 	std::cout << heap.log().size() << std::endl;
 	if (heap.log().size()) {
 	for (int i = 0; i < heap.log().size(); ++i) {
