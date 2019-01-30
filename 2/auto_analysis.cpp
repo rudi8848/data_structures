@@ -21,14 +21,13 @@ public:
 		j_id = find(j);
 		if (i_id == j_id)
 			return;
-		if (_rank[i_id] > _rank[j_id]) {
+		if (_rank[i_id] > _rank[j_id])
 			_parent[j_id] = i_id;
-		}
-		else {
+		else
 			_parent[i_id] = j_id;
+
 		if (_rank[i_id] == _rank[j_id])
 			_rank[j_id] += 1;
-		}
 	}
 
 	unsigned		find(unsigned i) {
@@ -58,14 +57,13 @@ int		main(void)
 	}
 
 	DisjoinSet set(numVariables);
+	unsigned a, b;
 
-	for (int i = 0; i < equal; ++i){
-		unsigned a, b;
+	for (int i = 0; i < equal; ++i){	
 		std::cin >> a >> b;
 		set.join(a, b);
 	}
 	for (int i = 0; i < notEqual; ++i) {
-		unsigned a, b;
 		std::cin >> a >> b;
 		if (set.find(a) == set.find(b)) {
 			std::cout << "0" << std::endl;
