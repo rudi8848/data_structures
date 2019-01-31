@@ -89,7 +89,7 @@ private:
 		long long tmp;
 
 		while (i < len) {
-			tmp = i ? str[i]  * pow(x, i) :	str[i];
+			tmp = str[i]  * pow(x, i);
 			res += tmp;
 			++i;
 		}
