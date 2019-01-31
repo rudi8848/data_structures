@@ -2,15 +2,15 @@
 #include <vector>
 
 #define q 1000000007l
-#define x 31
+#define x 31			/* <--- overflow with large numbers, all tests passed with x = 1 only; pow() is slow */
 
 class RabinKarp
 {
 public:
 	RabinKarp(std::string const & pattern, std::string const & text): _pattern(pattern) {
-		//std::cout << __FUNCTION__ << std::endl;
+
 		_length = pattern.length();
-		_patternHash = hash(pattern.c_str());
+		_patternHash = hash(pattern);
 		check(text);
 		_occ.shrink_to_fit();
 	}
@@ -18,23 +18,21 @@ public:
 	~RabinKarp() {}
 
 	void	showOccurences() {
-		//std::cout << __FUNCTION__ << std::endl;
+
 		for (unsigned i : _occ)
 			std::cout << i << " ";
 		std::cout << std::endl;
 	}
 
-	std::vector<unsigned> const & getOccurences() {
-		return _occ;
-	}
+	std::vector<unsigned> const & getOccurences() {	return _occ; }
 private:
 	std::vector<unsigned>	_occ;
 	size_t					_length;
-	unsigned				_patternHash;
+	long long				_patternHash;
 	std::string				_pattern;
 
 	void		check(std::string const & str) {
-		//std::cout << __FUNCTION__ << std::endl;
+
 		size_t		i = 1;
 		long long	newHash;
 		long long	oldHash;
@@ -44,20 +42,15 @@ private:
 		size_t		len = str.length() - _length + 1;
 
 		oldChar = str[0];
-		oldHash = hash(str.c_str());
+		oldHash = hash(str);
 		if (oldHash == _patternHash && equal(str, 0))
 			_occ.push_back(0);
 		while (i < len) {
 			newChar = str[i + _length -1]; 
-			tmp = oldHash - oldChar;
-			tmp = ((tmp % q) + q) %q;
+			tmp = ((oldHash - oldChar)%q +q)%q;
 			tmp /= x;
-			
-			newHash = tmp + ( ((newChar * pow(x, _length - 1))%q) + q) % q;
+			newHash = tmp +  ((newChar * pow(x, _length - 1))%q)  % q;
 			newHash %= q;
-			std::cout << "i = " << i <<"; oldChar = " << oldChar << "; oldHash = " << oldHash
-			<< "; newChar = " << newChar << "; newHash " << newHash << "; _patternHash: "
-			<< _patternHash << std::endl;
 			if ( newHash == _patternHash && equal(str, i))
 				_occ.push_back(i);
 			oldHash = newHash;
@@ -67,7 +60,7 @@ private:
 	}
 
 	bool		equal(std::string const & str, size_t index) {
-		//std::cout << __FUNCTION__ << std::endl;
+
 		size_t i = 0;
 		while (i < _length) {
 			if (_pattern[i] != str[index])
@@ -79,31 +72,28 @@ private:
 	}
 
 	long long	pow(long long base, size_t power) {
-		//std::cout << __FUNCTION__ << std::endl;
+
 		long long res = 1;
 		if (power == 0 || base == 1)
 			return 1;
 		for (size_t i = 0; i < power; ++i) {
-			res *= base;
-			res %= q;
+			res = (res * base)%q;
 		}
-		return res;
+		return res % q;
 	}
 
-	long long	hash(char const* str) {
-		//std::cout << __FUNCTION__ << std::endl;
+	long long	hash(std::string const & str) {
+
 		size_t i = 0;
 		long long res = 0;
 		long long tmp;
 
 		while (i < _length) {
 			tmp = str[i]  * pow(x, i);
-			res += tmp %q;
-			tmp = ((tmp%q) + q) %q;
+			res = (res + tmp) % q;
 			++i;
 		}
-		res = ((res%q) + q)% q;
-		return res;
+		return res % q;
 	}
 };
 
