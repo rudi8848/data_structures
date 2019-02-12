@@ -124,10 +124,12 @@ void			find(Node *node, long long k) {
 void			inOrder(Node *v, long long const &left, long long const &right,long long &res) {
 	if (!v)
 		return;
-	inOrder(v->left, left, right, res);
+	if (v->key > left)
+		inOrder(v->left, left, right, res);
 	if (v->key >= left && v->key <= right)
 		res += v->key;
-	inOrder(v->right, left, right, res);
+	if (v->key < right)
+		inOrder(v->right, left, right, res);
 }
 
 long long		sum(Node *node, long long left, long long right) {
